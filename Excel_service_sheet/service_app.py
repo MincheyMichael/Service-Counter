@@ -56,16 +56,19 @@ def display_data():
     window.grid_columnconfigure(0, weight=1)
 
 
+# updating tree view after each value is added
 def refresh_treeview():
     global treeview
     display_data()
 
 
+# Save data after each addition or subtraction
 def save_df():
     csv_file_path = "service_data.csv"
     df.to_csv(csv_file_path, index=False)
 
 
+# reset all tech values back to zero
 def reset():
     global df
     df = reset_df
@@ -73,9 +76,14 @@ def reset():
     display_data()
 
 
+# pop up display of personal tech service count
 def display_tech(tech_info):
     global df
-    tree = ttk.Treeview(window, columns=list(tech_info.columns), show="headings")
+
+    tech_frame = tk.Frame(window)
+    tech_frame.grid(row=1, column=0, padx=5, pady=5, sticky="new")
+
+    tree = ttk.Treeview(tech_frame, columns=list(tech_info.columns), show="headings")
 
     for col in tech_info.columns:
         tree.heading(col, text=col)
@@ -88,6 +96,7 @@ def display_tech(tech_info):
 
 
 # -----------------------------------------control frame---------------------------------------------------
+# all buttons and functions needed for controls of GUI
 def control_frame():
     controls_frame = tk.Frame(window)
     controls_frame.grid(row=0, column=1, padx=5, pady=5, sticky="new")
@@ -104,7 +113,6 @@ def control_frame():
     label5.grid(row=5, column=0, padx=0, pady=5)
 
     # -------------------ENTRY------------------------------------
-
     def entry_button():
         global treeview
         tech_number = e1.get()
@@ -155,6 +163,7 @@ def control_frame():
         display_data()
         save_df()
 
+    # grid layout for each button
     as1 = tk.Button(controls_frame, text="Add", command=add_service_a, width=5)
     as1.grid(row=1, column=1, padx=0, pady=5)
     bs1 = tk.Button(controls_frame, text="Add", command=add_service_b, width=5)
@@ -163,8 +172,8 @@ def control_frame():
     cp1.grid(row=3, column=1, padx=0, pady=5)
     pp1 = tk.Button(controls_frame, text="Add", command=add_service_ppm, width=5)
     pp1.grid(row=4, column=1, padx=0, pady=5)
-    w1 = tk.Button(controls_frame, text="Add", command=add_service_warranty, width=5)
-    w1.grid(row=5, column=1, padx=0, pady=5)
+    war1 = tk.Button(controls_frame, text="Add", command=add_service_warranty, width=5)
+    war1.grid(row=5, column=1, padx=0, pady=5)
 
     # -------------------- Subtract buttons -----------------------
 
@@ -203,6 +212,7 @@ def control_frame():
         display_data()
         save_df()
 
+    # grid layout for subtraction buttons
     as2 = tk.Button(controls_frame, text="Subtract", command=sub_service_a, width=5)
     as2.grid(row=1, column=2, padx=0, pady=5)
     bs2 = tk.Button(controls_frame, text="Subtract", command=sub_service_b, width=5)
@@ -226,6 +236,7 @@ def app():
     control_frame()
 
 
+# GUI
 treeview = None
 app()
 
